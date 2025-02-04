@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e1f4ff 100%);
+        }
+        .form-container {
+            display: none;
+        }
+        .form-container.active {
+            display: block;
+        }
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+            <!-- Header Logo -->
+            <div class="text-center mb-8">
+                <i class="bi bi-check-circle-fill text-4xl text-blue-500"></i>
+                <h1 class="text-2xl font-bold text-gray-800 mt-2">Digital Voting System</h1>
+                <p class="text-gray-600 text-sm">Secure • Transparent • Reliable</p>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-center mb-8">
+                <button id="loginBtn" class="px-6 py-2 mx-2 rounded-full text-sm font-semibold transition-all duration-300 bg-blue-500 text-white hover:bg-blue-600 shadow-md">
+                    <i class="bi bi-box-arrow-in-right mr-2"></i>Login
+                </button>
+                <button id="registerBtn" class="px-6 py-2 mx-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-md">
+                    <i class="bi bi-person-plus mr-2"></i>Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container active">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Welcome Back</h2>
+                <form id="loginFormElement" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="loginEmail">
+                            <i class="bi bi-envelope mr-2"></i>Email Address
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="email" id="loginEmail" required placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="loginPassword">
+                            <i class="bi bi-lock mr-2"></i>Password
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 shadow-md">
+                        <i class="bi bi-arrow-right-circle mr-2"></i>Login to Vote
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="form-container">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">Create Account</h2>
+                <form id="registerFormElement" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="registerName">
+                            <i class="bi bi-person mr-2"></i>Full Name
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="text" id="registerName" required placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="registerEmail">
+                            <i class="bi bi-envelope mr-2"></i>Email Address
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="email" id="registerEmail" required placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="registerPassword">
+                            <i class="bi bi-lock mr-2"></i>Password
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="password" id="registerPassword" required placeholder="Choose a strong password">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="registerVoterId">
+                            <i class="bi bi-card-text mr-2"></i>Voter ID
+                        </label>
+                        <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               type="text" id="registerVoterId" required placeholder="Enter your voter ID">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 shadow-md">
+                        <i class="bi bi-person-plus mr-2"></i>Create Account
+                    </button>
+                </form>
+            </div>
+
+            <!-- Voting Interface -->
+            <div id="votingInterface" class="hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Current Election</h2>
+                    <button id="logoutBtn" class="text-sm text-gray-600 hover:text-red-500">
+                        <i class="bi bi-box-arrow-right mr-1"></i>Logout
+                    </button>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                    <p class="text-sm text-blue-800"><i class="bi bi-info-circle mr-2"></i>Please select one candidate to cast your vote.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="candidate-card p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-all duration-300">
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="candidate" value="candidate1" class="form-radio h-5 w-5 text-blue-500">
+                            <div>
+                                <span class="text-gray-800 font-medium">John Smith</span>
+                                <p class="text-gray-500 text-sm">Party A</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="candidate-card p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-all duration-300">
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="candidate" value="candidate2" class="form-radio h-5 w-5 text-blue-500">
+                            <div>
+                                <span class="text-gray-800 font-medium">Sarah Johnson</span>
+                                <p class="text-gray-500 text-sm">Party B</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="candidate-card p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-all duration-300">
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="candidate" value="candidate3" class="form-radio h-5 w-5 text-blue-500">
+                            <div>
+                                <span class="text-gray-800 font-medium">Michael Brown</span>
+                                <p class="text-gray-500 text-sm">Party C</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <button id="submitVote" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors duration-300 mt-6 shadow-md">
+                    <i class="bi bi-check2-circle mr-2"></i>Submit Vote
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const votingInterface = document.getElementById('votingInterface');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        loginBtn.addEventListener('click', () => {
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            loginBtn.classList.add('bg-blue-500', 'text-white');
+            loginBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            registerBtn.classList.add('bg-gray-200', 'text-gray-700');
+            registerBtn.classList.remove('bg-blue-500', 'text-white');
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            registerBtn.classList.add('bg-blue-500', 'text-white');
+            registerBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            loginBtn.classList.add('bg-gray-200', 'text-gray-700');
+            loginBtn.classList.remove('bg-blue-500', 'text-white');
+        });
+
+        document.getElementById('loginFormElement').addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            document.querySelector('.flex.justify-center').style.display = 'none';
+            votingInterface.classList.remove('hidden');
+        });
+
+        document.getElementById('registerFormElement').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Registration successful! Please login to continue.');
+            loginBtn.click();
+        });
+
+        document.getElementById('submitVote').addEventListener('click', () => {
+            const selectedCandidate = document.querySelector('input[name="candidate"]:checked');
+            if (selectedCandidate) {
+                const candidateName = selectedCandidate.closest('label').querySelector('.text-gray-800').textContent;
+                alert(`Thank you! Your vote for ${candidateName} has been recorded successfully.`);
+                location.reload();
+            } else {
+                alert('Please select a candidate before submitting your vote.');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
